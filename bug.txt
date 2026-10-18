@@ -1,0 +1,14 @@
+^Vnano@nano:~/work/realsense$ cd ~/work/realsense && python3 run_realsense.py --int --frames 30 --save-dir out --stride 5 --min-cluster-points 800 --max-dist 1.2 --flip
+\[TRT] 加载 engine…
+[10/06/2026-19:54:45] [TRT] [E] 1: [wrapper.cpp::CublasWrapper::85] Error Code 1: Cublas (Could not initialize cublas. Please check CUDA installation.)
+[10/06/2026-19:54:45] [TRT] [E] 4: [runtime.cpp::deserializeCudaEngine::50] Error Code 4: Internal Error (Engine deserialization failed.)
+Traceback (most recent call last):
+  File "run_realsense.py", line 338, in <module>
+    raise SystemExit(main())
+  File "run_realsense.py", line 165, in main
+    eng = Engine(a.engine)
+  File "/home/nano/work/common/trt_infer.py", line 90, in __init__
+    raise RuntimeError("engine 反序列化失败")
+RuntimeError: engine 反序列化失败
+nano@nano:~/work/realsense$ 
+

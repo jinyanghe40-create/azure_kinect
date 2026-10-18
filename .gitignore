@@ -1,0 +1,70 @@
+# ===== 编译产物 =====
+build/
+build-*/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+*.o
+*.a
+*.so
+*.so.*
+*.ko
+# 但保留 SDK 说明, 见下面的 ! 规则
+
+# ===== C++ 可执行文件 (无扩展名, 由 build 产出) =====
+# 用 scripts/build_host.sh 重新生成, 不进仓库
+
+# ===== 微软 Azure Kinect SDK 二进制 (不随仓库分发) =====
+# 由 deploy_setup.sh / k4a 官方包提供
+azure_kinect/libs/
+azure_kinect/include/
+
+# ===== 第三方安装包 (太大, 用时自己下) =====
+pkgs/*.deb
+pkgs/*.tar.gz
+wheels/*.whl
+
+# ===== 模型: 保留训练权重, 丢掉平台相关产物 =====
+models/*.engine
+models/*.plan
+models/*.trt
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+venv/
+.venv/
+env/
+
+# ===== 重构前的旧备份 (git 已经能管历史了) =====
+_history/
+
+# ===== 运行产物 / 日志 / 抓图 =====
+*.log
+logs/
+*.npy
+*.npz
+*.pcd
+*.ply
+*.bag
+*.mkv
+*.mp4
+snap_*.jpg
+snap_*.png
+frame_*.png
+debug_*.png
+proj_*.png
+
+# ===== 编辑器 / 系统 =====
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# ===== 本机覆盖配置 (端口/IP 因人而异) =====
+local_*.sh
+*.local.json

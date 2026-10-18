@@ -1,0 +1,468 @@
+[
+ {
+  "id": 0,
+  "face_center_m": [
+   -0.1521,
+   0.383,
+   0.8014
+  ],
+  "normal": [
+   -0.1808,
+   -0.009,
+   -0.9835
+  ],
+  "angle_deg": 10.43,
+  "n_points": 1812,
+  "n_faces": 3,
+  "face_rms_mm": 1.47,
+  "lean_deg": null,
+  "faces": [
+   {
+    "normal": [
+     -0.1808,
+     -0.009,
+     -0.9835
+    ],
+    "center": [
+     -0.1521,
+     0.383,
+     0.8014
+    ],
+    "angle_deg": 10.43,
+    "lean_deg": null,
+    "n_points": 695,
+    "rms_mm": 1.47
+   },
+   {
+    "normal": [
+     0.9847,
+     0.0019,
+     -0.1742
+    ],
+    "center": [
+     -0.1985,
+     0.3834,
+     0.8735
+    ],
+    "angle_deg": 79.97,
+    "lean_deg": null,
+    "n_points": 637,
+    "rms_mm": 1.49
+   },
+   {
+    "normal": [
+     0.0131,
+     -0.9999,
+     -0.0025
+    ],
+    "center": [
+     -0.1701,
+     0.3302,
+     0.8453
+    ],
+    "angle_deg": 89.86,
+    "lean_deg": null,
+    "n_points": 249,
+    "rms_mm": 1.44
+   }
+  ],
+  "cube_center_m": [
+   -0.2552,
+   0.3865,
+   0.8777
+  ],
+  "n_face_pts": 695,
+  "nearest_m": 0.862,
+  "nearest_pt_m": [
+   -0.0948,
+   0.3367,
+   0.7878
+  ],
+  "plane_thresh_used_mm": 3.0,
+  "sigma_z_mm": 1.35,
+  "edge_used_m": 0.1126,
+  "edge_src": "auto",
+  "edge_faces_m": [
+   0.1126,
+   0.1142,
+   0.0873
+  ]
+ },
+ {
+  "id": 1,
+  "face_center_m": [
+   -0.1196,
+   0.3301,
+   0.8692
+  ],
+  "normal": [
+   0.0061,
+   -1.0,
+   0.0072
+  ],
+  "angle_deg": 89.59,
+  "n_points": 472,
+  "n_faces": 1,
+  "face_rms_mm": 1.52,
+  "lean_deg": null,
+  "faces": [
+   {
+    "normal": [
+     0.0061,
+     -1.0,
+     0.0072
+    ],
+    "center": [
+     -0.1196,
+     0.3301,
+     0.8692
+    ],
+    "angle_deg": 89.59,
+    "lean_deg": null,
+    "n_points": 414,
+    "rms_mm": 1.52
+   }
+  ],
+  "cube_center_m": [
+   -0.1206,
+   0.381,
+   0.8689
+  ],
+  "n_face_pts": 414,
+  "nearest_m": 0.863,
+  "nearest_pt_m": [
+   -0.09,
+   0.3313,
+   0.7917
+  ],
+  "plane_thresh_used_mm": 3.04,
+  "sigma_z_mm": 1.52,
+  "edge_used_m": 0.1017,
+  "edge_src": "auto",
+  "edge_faces_m": [
+   0.1017
+  ]
+ },
+ {
+  "id": 2,
+  "face_center_m": [
+   -0.1239,
+   0.3862,
+   1.0821
+  ],
+  "normal": [
+   0.32,
+   0.0016,
+   -0.9474
+  ],
+  "angle_deg": 18.66,
+  "n_points": 2209,
+  "n_faces": 3,
+  "face_rms_mm": 1.91,
+  "lean_deg": null,
+  "faces": [
+   {
+    "normal": [
+     0.0031,
+     -1.0,
+     -0.0057
+    ],
+    "center": [
+     -0.1406,
+     0.3302,
+     1.1354
+    ],
+    "angle_deg": 89.67,
+    "lean_deg": null,
+    "n_points": 856,
+    "rms_mm": 1.98
+   },
+   {
+    "normal": [
+     0.32,
+     0.0016,
+     -0.9474
+    ],
+    "center": [
+     -0.1239,
+     0.3862,
+     1.0821
+    ],
+    "angle_deg": 18.66,
+    "lean_deg": null,
+    "n_points": 695,
+    "rms_mm": 1.91
+   },
+   {
+    "normal": [
+     -0.9478,
+     0.0077,
+     -0.3187
+    ],
+    "center": [
+     -0.198,
+     0.3837,
+     1.1239
+    ],
+    "angle_deg": 71.42,
+    "lean_deg": null,
+    "n_points": 632,
+    "rms_mm": 1.89
+   }
+  ],
+  "cube_center_m": [
+   -0.1429,
+   0.3864,
+   1.1355
+  ],
+  "n_face_pts": 695,
+  "nearest_m": 1.1272,
+  "nearest_pt_m": [
+   -0.171,
+   0.3307,
+   1.0639
+  ],
+  "plane_thresh_used_mm": 4.88,
+  "sigma_z_mm": 2.44,
+  "edge_used_m": 0.1129,
+  "edge_src": "auto",
+  "edge_faces_m": [
+   0.1245,
+   0.1129,
+   0.1122
+  ]
+ },
+ {
+  "id": 3,
+  "face_center_m": [
+   0.1303,
+   0.3838,
+   0.8008
+  ],
+  "normal": [
+   -0.1214,
+   -0.0007,
+   -0.9926
+  ],
+  "angle_deg": 6.97,
+  "n_points": 1711,
+  "n_faces": 3,
+  "face_rms_mm": 1.52,
+  "lean_deg": null,
+  "faces": [
+   {
+    "normal": [
+     -0.9931,
+     -0.002,
+     0.1176
+    ],
+    "center": [
+     0.1993,
+     0.3853,
+     0.8511
+    ],
+    "angle_deg": 83.25,
+    "lean_deg": null,
+    "n_points": 689,
+    "rms_mm": 1.51
+   },
+   {
+    "normal": [
+     -0.1214,
+     -0.0007,
+     -0.9926
+    ],
+    "center": [
+     0.1303,
+     0.3838,
+     0.8008
+    ],
+    "angle_deg": 6.97,
+    "lean_deg": null,
+    "n_points": 609,
+    "rms_mm": 1.52
+   },
+   {
+    "normal": [
+     -0.0088,
+     -1.0,
+     -0.0026
+    ],
+    "center": [
+     0.1701,
+     0.3301,
+     0.8381
+    ],
+    "angle_deg": 89.85,
+    "lean_deg": null,
+    "n_points": 218,
+    "rms_mm": 1.45
+   }
+  ],
+  "cube_center_m": [
+   0.2569,
+   0.3874,
+   0.8434
+  ],
+  "n_face_pts": 609,
+  "nearest_m": 0.872,
+  "nearest_pt_m": [
+   0.1216,
+   0.3319,
+   0.7972
+  ],
+  "plane_thresh_used_mm": 3.0,
+  "sigma_z_mm": 1.31,
+  "edge_used_m": 0.1145,
+  "edge_src": "auto-max",
+  "edge_faces_m": [
+   0.1129,
+   0.1145,
+   0.083
+  ]
+ },
+ {
+  "id": 4,
+  "face_center_m": [
+   0.1242,
+   0.3298,
+   0.8679
+  ],
+  "normal": [
+   -0.0006,
+   -0.9999,
+   -0.0124
+  ],
+  "angle_deg": 89.29,
+  "n_points": 552,
+  "n_faces": 1,
+  "face_rms_mm": 1.53,
+  "lean_deg": null,
+  "faces": [
+   {
+    "normal": [
+     -0.0006,
+     -0.9999,
+     -0.0124
+    ],
+    "center": [
+     0.1242,
+     0.3298,
+     0.8679
+    ],
+    "angle_deg": 89.29,
+    "lean_deg": null,
+    "n_points": 475,
+    "rms_mm": 1.53
+   }
+  ],
+  "cube_center_m": [
+   0.123,
+   0.3795,
+   0.8682
+  ],
+  "n_face_pts": 475,
+  "nearest_m": 0.8726,
+  "nearest_pt_m": [
+   0.0859,
+   0.3311,
+   0.8027
+  ],
+  "plane_thresh_used_mm": 3.02,
+  "sigma_z_mm": 1.51,
+  "edge_used_m": 0.0994,
+  "edge_src": "auto",
+  "edge_faces_m": [
+   0.0994
+  ]
+ },
+ {
+  "id": 5,
+  "face_center_m": [
+   0.1555,
+   0.3849,
+   1.0817
+  ],
+  "normal": [
+   0.3352,
+   0.0019,
+   -0.9421
+  ],
+  "angle_deg": 19.58,
+  "n_points": 2230,
+  "n_faces": 3,
+  "face_rms_mm": 1.88,
+  "lean_deg": null,
+  "faces": [
+   {
+    "normal": [
+     0.0073,
+     -1.0,
+     -0.0028
+    ],
+    "center": [
+     0.1447,
+     0.3301,
+     1.1369
+    ],
+    "angle_deg": 89.84,
+    "lean_deg": null,
+    "n_points": 865,
+    "rms_mm": 1.95
+   },
+   {
+    "normal": [
+     -0.9446,
+     -0.0059,
+     -0.3281
+    ],
+    "center": [
+     0.1961,
+     0.3895,
+     1.161
+    ],
+    "angle_deg": 70.85,
+    "lean_deg": null,
+    "n_points": 690,
+    "rms_mm": 1.96
+   },
+   {
+    "normal": [
+     0.3352,
+     0.0019,
+     -0.9421
+    ],
+    "center": [
+     0.1555,
+     0.3849,
+     1.0817
+    ],
+    "angle_deg": 19.58,
+    "lean_deg": null,
+    "n_points": 639,
+    "rms_mm": 1.88
+   }
+  ],
+  "cube_center_m": [
+   0.2509,
+   0.3881,
+   1.176
+  ],
+  "n_face_pts": 639,
+  "nearest_m": 1.1177,
+  "nearest_pt_m": [
+   0.1005,
+   0.3431,
+   1.059
+  ],
+  "plane_thresh_used_mm": 5.04,
+  "sigma_z_mm": 2.52,
+  "edge_used_m": 0.1141,
+  "edge_src": "auto",
+  "edge_faces_m": [
+   0.1254,
+   0.1141,
+   0.1121
+  ]
+ }
+]

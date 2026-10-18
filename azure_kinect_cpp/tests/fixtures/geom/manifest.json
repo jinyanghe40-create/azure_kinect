@@ -1,0 +1,208 @@
+[
+ {
+  "name": "grid_default",
+  "n": 29600,
+  "pts": "grid_default.f32",
+  "expected": "grid_default.expected.json",
+  "args": {
+   "edge": 0.12,
+   "edge_auto": true,
+   "min_dist": 0.3,
+   "max_dist": 1.5,
+   "plane_thresh": 0.003,
+   "table_thresh": 0.01,
+   "voxel": 0.02,
+   "min_cluster_points": 0,
+   "max_faces": 3,
+   "depth_noise_coef": 0.002,
+   "face_select": "most_facing",
+   "up_axis": null,
+   "cam_axis": null,
+   "cam_origin": null
+  }
+ },
+ {
+  "name": "grid_largest",
+  "n": 29600,
+  "pts": "grid_largest.f32",
+  "expected": "grid_largest.expected.json",
+  "args": {
+   "edge": 0.12,
+   "edge_auto": true,
+   "min_dist": 0.3,
+   "max_dist": 1.5,
+   "plane_thresh": 0.003,
+   "table_thresh": 0.01,
+   "voxel": 0.02,
+   "min_cluster_points": 0,
+   "max_faces": 3,
+   "depth_noise_coef": 0.002,
+   "face_select": "largest",
+   "up_axis": null,
+   "cam_axis": null,
+   "cam_origin": null
+  }
+ },
+ {
+  "name": "grid_upaxis",
+  "n": 29600,
+  "pts": "grid_upaxis.f32",
+  "expected": "grid_upaxis.expected.json",
+  "args": {
+   "edge": 0.12,
+   "edge_auto": true,
+   "min_dist": 0.3,
+   "max_dist": 1.5,
+   "plane_thresh": 0.003,
+   "table_thresh": 0.01,
+   "voxel": 0.02,
+   "min_cluster_points": 0,
+   "max_faces": 3,
+   "depth_noise_coef": 0.002,
+   "face_select": "most_facing",
+   "up_axis": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "cam_axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "cam_origin": null
+  }
+ },
+ {
+  "name": "grid_split_on",
+  "n": 29600,
+  "pts": "grid_split_on.f32",
+  "expected": "grid_split_on.expected.json",
+  "args": {
+   "edge": 0.12,
+   "edge_auto": true,
+   "min_dist": 0.3,
+   "max_dist": 1.5,
+   "plane_thresh": 0.003,
+   "table_thresh": 0.01,
+   "voxel": 0.02,
+   "min_cluster_points": 0,
+   "max_faces": 3,
+   "depth_noise_coef": 0.002,
+   "face_select": "most_facing",
+   "up_axis": null,
+   "cam_axis": null,
+   "cam_origin": null
+  },
+  "boxes": "grid_split_on.boxes.json",
+  "intr": [
+   500.0,
+   500.0,
+   320.0,
+   240.0
+  ],
+  "size": [
+   640,
+   480
+  ],
+  "rotate": 0,
+  "px_fix": [
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "name": "grid_bodyframe",
+  "n": 29600,
+  "pts": "grid_bodyframe.f32",
+  "expected": "grid_bodyframe.expected.json",
+  "args": {
+   "edge": 0.12,
+   "edge_auto": true,
+   "min_dist": 0.3,
+   "max_dist": 1.5,
+   "plane_thresh": 0.003,
+   "table_thresh": 0.01,
+   "voxel": 0.02,
+   "min_cluster_points": 0,
+   "max_faces": 3,
+   "depth_noise_coef": 0.002,
+   "face_select": "most_facing",
+   "up_axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "cam_axis": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "cam_origin": [
+    0.25,
+    0.0,
+    0.6
+   ]
+  }
+ },
+ {
+  "name": "touch_split_on",
+  "n": 24200,
+  "pts": "touch_split_on.f32",
+  "expected": "touch_split_on.expected.json",
+  "args": {
+   "edge": 0.1,
+   "edge_auto": true,
+   "min_dist": 0.3,
+   "max_dist": 1.5,
+   "plane_thresh": 0.003,
+   "table_thresh": 0.008,
+   "voxel": 0.02,
+   "min_cluster_points": 0,
+   "max_faces": 3,
+   "depth_noise_coef": 0.002,
+   "face_select": "most_facing",
+   "up_axis": null,
+   "cam_axis": null,
+   "cam_origin": null
+  },
+  "boxes": "touch_split_on.boxes.json",
+  "intr": [
+   500.0,
+   500.0,
+   320.0,
+   240.0
+  ],
+  "size": [
+   640,
+   480
+  ],
+  "rotate": 0,
+  "px_fix": [
+   0.0,
+   0.0
+  ]
+ },
+ {
+  "name": "touch_split_off",
+  "n": 24200,
+  "pts": "touch_split_off.f32",
+  "expected": "touch_split_off.expected.json",
+  "args": {
+   "edge": 0.1,
+   "edge_auto": true,
+   "min_dist": 0.3,
+   "max_dist": 1.5,
+   "plane_thresh": 0.003,
+   "table_thresh": 0.008,
+   "voxel": 0.02,
+   "min_cluster_points": 0,
+   "max_faces": 3,
+   "depth_noise_coef": 0.002,
+   "face_select": "most_facing",
+   "up_axis": null,
+   "cam_axis": null,
+   "cam_origin": null
+  }
+ }
+]

@@ -1,0 +1,25 @@
+# 帧号	这张图里应该出现的全部类别	来源（相对 ~/kinect）
+1	tools	kinect/annotation/images/tools/session_001_f000020.jpg
+2	medicine	kinect/annotation/images/medicine/session_001_f000100.jpg
+3	instrument	kinect/annotation/images/instrument/session_001_f000080.jpg
+4	food	kinect/annotation/images/food/session_002_f000000.jpg
+5	tools	kinect/annotation/images/tools/session_001_f000030.jpg
+6	medicine	kinect/annotation/images/medicine/session_001_f000110.jpg
+7	instrument	kinect/annotation/images/instrument/session_001_f000090.jpg
+8	food	kinect/annotation/images/food/session_002_f000010.jpg
+9	tools	kinect/annotation/images/tools/session_001_f000040.jpg
+10	medicine	kinect/annotation/images/medicine/session_001_f000180.jpg
+11	instrument	kinect/annotation/images/instrument/session_001_f000100.jpg
+12	food	kinect/annotation/images/food/session_002_f000040.jpg
+13	tools	kinect/annotation/images/tools/session_001_f000050.jpg
+14	medicine	kinect/annotation/images/medicine/session_001_f000190.jpg
+15	instrument	kinect/annotation/images/instrument/session_001_f000110.jpg
+16	food	kinect/annotation/images/food/session_002_f000050.jpg
+17	tools	kinect/annotation/images/tools/session_001_f000260.jpg
+18	tools,medicine,instrument	kinect/annotation/images/medicine/session_002_f000080.jpg
+19	instrument	kinect/annotation/images/instrument/session_001_f000240.jpg
+20	food	kinect/annotation/images/food/session_002_f000260.jpg
+21	tools	kinect/annotation/images/tools/session_001_f000270.jpg
+22	tools,medicine,instrument	kinect/annotation/images/medicine/session_002_f000090.jpg
+23	instrument	kinect/annotation/images/instrument/session_001_f000250.jpg
+24	food	kinect/annotation/images/food/session_002_f000270.jpg

@@ -1,0 +1,48 @@
+{
+  "schema": "k4a_body_calib",
+  "version": 1,
+  "id": "zero-offset-20261018-rot180",
+  "created": "2026-10-18",
+  "body_frame": {
+    "convention": "ROS REP-103: X前 / Y左 / Z上",
+    "origin": "chassis geometric center (含高度)",
+    "units": "position in m, angle in deg"
+  },
+  "camera": {
+    "serial": "000555614212",
+    "depth_mode": "nfov",
+    "color": "720p"
+  },
+  "image_rotate_deg": 180,
+  "R_cam_to_body": [
+    [
+      0.0,
+      0.0,
+      1.0
+    ],
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      -0.0,
+      1.0,
+      0.0
+    ]
+  ],
+  "t_cam_to_body_m": [
+    0.001,
+    0.0,
+    0.0
+  ],
+  "tape": {
+    "yaw_deg": 0.0,
+    "pitch_deg": 0.0,
+    "roll_deg": 180.0,
+    "forward_mm": 1.0,
+    "left_mm": 0.0,
+    "height_mm": 0.0,
+    "note": "角度用公式 R = Rz_body(yaw)·Ry_body(pitch)·C0·Rz_optical(roll)"
+  }
+}

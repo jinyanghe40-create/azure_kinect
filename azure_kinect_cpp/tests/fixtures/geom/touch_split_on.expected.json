@@ -1,0 +1,180 @@
+[
+ {
+  "id": 0,
+  "face_center_m": [
+   -0.0542,
+   0.2454,
+   0.7
+  ],
+  "normal": [
+   -0.0051,
+   0.0054,
+   -1.0
+  ],
+  "angle_deg": 0.42,
+  "n_points": 1982,
+  "n_faces": 3,
+  "face_rms_mm": 1.3,
+  "lean_deg": null,
+  "faces": [
+   {
+    "normal": [
+     -0.0067,
+     -1.0,
+     0.0005
+    ],
+    "center": [
+     -0.0513,
+     0.2002,
+     0.7511
+    ],
+    "angle_deg": 89.97,
+    "lean_deg": null,
+    "n_points": 683,
+    "rms_mm": 1.37
+   },
+   {
+    "normal": [
+     -0.0051,
+     0.0054,
+     -1.0
+    ],
+    "center": [
+     -0.0542,
+     0.2454,
+     0.7
+    ],
+    "angle_deg": 0.42,
+    "lean_deg": null,
+    "n_points": 647,
+    "rms_mm": 1.3
+   },
+   {
+    "normal": [
+     1.0,
+     0.0047,
+     -0.0027
+    ],
+    "center": [
+     -0.0999,
+     0.2469,
+     0.7512
+    ],
+    "angle_deg": 89.85,
+    "lean_deg": null,
+    "n_points": 551,
+    "rms_mm": 1.3
+   }
+  ],
+  "cube_center_m": [
+   -0.1467,
+   0.2474,
+   0.7475
+  ],
+  "n_face_pts": 647,
+  "nearest_m": 0.7257,
+  "nearest_pt_m": [
+   -0.0223,
+   0.1969,
+   0.6981
+  ],
+  "plane_thresh_used_mm": 3.0,
+  "sigma_z_mm": 1.05,
+  "edge_used_m": 0.0948,
+  "edge_src": "auto",
+  "edge_faces_m": [
+   0.1024,
+   0.0948,
+   0.0936
+  ]
+ },
+ {
+  "id": 1,
+  "face_center_m": [
+   0.0489,
+   0.245,
+   0.7
+  ],
+  "normal": [
+   0.0016,
+   0.0027,
+   -1.0
+  ],
+  "angle_deg": 0.18,
+  "n_points": 1996,
+  "n_faces": 3,
+  "face_rms_mm": 1.3,
+  "lean_deg": null,
+  "faces": [
+   {
+    "normal": [
+     -1.0,
+     0.0003,
+     0.0036
+    ],
+    "center": [
+     0.0999,
+     0.2457,
+     0.7473
+    ],
+    "angle_deg": 89.8,
+    "lean_deg": null,
+    "n_points": 682,
+    "rms_mm": 1.37
+   },
+   {
+    "normal": [
+     0.0021,
+     -1.0,
+     -0.0015
+    ],
+    "center": [
+     0.0484,
+     0.1999,
+     0.7465
+    ],
+    "angle_deg": 89.91,
+    "lean_deg": null,
+    "n_points": 659,
+    "rms_mm": 1.33
+   },
+   {
+    "normal": [
+     0.0016,
+     0.0027,
+     -1.0
+    ],
+    "center": [
+     0.0489,
+     0.245,
+     0.7
+    ],
+    "angle_deg": 0.18,
+    "lean_deg": null,
+    "n_points": 568,
+    "rms_mm": 1.3
+   }
+  ],
+  "cube_center_m": [
+   0.1477,
+   0.2481,
+   0.748
+  ],
+  "n_face_pts": 568,
+  "nearest_m": 0.7251,
+  "nearest_pt_m": [
+   0.0039,
+   0.2022,
+   0.6964
+  ],
+  "plane_thresh_used_mm": 3.0,
+  "sigma_z_mm": 1.05,
+  "edge_used_m": 0.0962,
+  "edge_src": "auto",
+  "edge_faces_m": [
+   0.0962,
+   0.1025,
+   0.0946
+  ]
+ }
+]
