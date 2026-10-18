@@ -286,7 +286,7 @@ std::string default_calib_path() {
     const std::string dir = executable_dir();
     const std::string local = dir + "/body_calib.json";
     if (file_exists(local)) return local;
-    const std::string sibling = dir + "/../azure_kinect/body_calib.json";
+    const std::string sibling = dir + "/../body_calib.json";
     if (file_exists(sibling)) return sibling;
     return local;
 }

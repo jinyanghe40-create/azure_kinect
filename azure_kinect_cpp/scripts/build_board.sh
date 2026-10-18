@@ -31,8 +31,8 @@ cmake -S "$ROOT" -B "$BUILD" "${CMAKE_ARGS[@]}" "$@"
 cmake --build "$BUILD" -- -j"$(nproc)"
 
 # Put the calibration next to the binary: default_calib_path() looks there
-# first, then falls back to ../azure_kinect/body_calib.json.
-CALIB="$ROOT/../azure_kinect/body_calib.json"
+# first, then falls back to ../body_calib.json (the repo copy).
+CALIB="$ROOT/body_calib.json"
 if [[ -f "$CALIB" ]]; then
     cp -f "$CALIB" "$BUILD/body_calib.json"
     echo "calibration -> $BUILD/body_calib.json"

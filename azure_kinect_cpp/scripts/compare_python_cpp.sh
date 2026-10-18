@@ -19,13 +19,18 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BIN="${BIN:-$ROOT/build/run_azure_cpp}"
-PY="${PY:-$ROOT/../azure_kinect/run_azure.py}"
+# The Python reference implementation is not part of this repository.
+PY="${PY:-}"
 PYTHON="${PYTHON:-python3}"
+if [[ -z "$PY" ]]; then
+    echo "❌ 需要 PY=/path/to/run_azure.py（Python 参考实现不在本仓库）" >&2
+    exit 2
+fi
 N="${1:-20}"
 case "$N" in ''|*[!0-9]*) echo "第一个参数必须是帧数" >&2; exit 2;; esac
 shift || true
 
-CALIB="${CALIB:-$ROOT/../azure_kinect/body_calib.json}"
+CALIB="${CALIB:-$ROOT/body_calib.json}"
 OUT="${OUT_DIR:-/tmp/kvc-compare}"
 mkdir -p "$OUT"
 

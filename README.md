@@ -1,11 +1,10 @@
-# Azure Kinect 视觉链路
+# Azure Kinect 视觉链路（C++）
 
-> 在 **Jetson Nano + Azure Kinect DK** 上跑的目标检测与 3D 几何位姿估计链路：
+> 在 **Jetson + Azure Kinect DK** 上运行的实时目标检测与 3D 几何位姿估计链路：
 > 彩色图检测类别与 2D 框，深度图转点云拟合面心 / 法向 / 边长，
 > 统一换算到**车体系**后，通过串口以 **JSON Lines** 发给电控。
 
-![Platform](https://img.shields.io/badge/platform-Jetson%20Nano%20%7C%20x86-76B900?logo=nvidia&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3.6%2B-3776AB?logo=python&logoColor=white)
+![Platform](https://img.shields.io/badge/platform-Jetson%20%7C%20x86-76B900?logo=nvidia&logoColor=white)
 ![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus&logoColor=white)
 ![TensorRT](https://img.shields.io/badge/TensorRT-8.x-76B900)
 ![Protocol](https://img.shields.io/badge/serial-JSONL%20rev2-blue)
@@ -35,7 +34,7 @@ Azure Kinect DK
 - **几何**：纯几何法，不训练。RANSAC 平面剔除 → 体素下采样 → 欧式聚类 → 分簇平面拟合 → 法向统一 → 选识别面
 - **输出**：面心 `face`、体心 `cube`、单位法向 `normal`、边长 `edge`、与光轴夹角 `angle`、相对竖直倾角 `lean`、质量等级 `quality`
 - **坐标系**：相机倒装（`--rotate 180`），标定一次永久使用；输出统一在车体系
-- **双实现**：Python 生产链路 + 行为等价的 C++ 重写（`azure_kinect_cpp/`）
+- **附带**：标定、投影诊断、IMU 校验、相机体检等 8 个可执行工具
 
 ---
 
@@ -43,38 +42,22 @@ Azure Kinect DK
 
 ```
 .
-├── common/                 # 相机无关的算法层（两个相机共用）
-│   ├── trt_infer.py        # 主检测器：图像/视频 → 类别 + 2D 框
-│   ├── pc_pipeline.py      # 几何管线：点云 → 去桌面 → 聚类 → 拟合面 → 夹角
-│   ├── ssd_decoder.py      # SSD 后处理（anchor / 解码 / softmax / NMS），纯 numpy
-│   ├── depth_to_cloud.py   # 深度图 + 内参 → 点云（解耦的关键一层）
-│   ├── serial_out.py       # 串口输出线程（JSON Lines，不阻塞推理）
-│   └── lab1_ransac.py / lab2_pointcloud.py / lab3_angle.py   # 原理解析脚本
-│
-├── azure_kinect/           # Azure Kinect DK 适配层与部署
-│   ├── run_azure.py        # ★ 主入口：取帧 → 检测 → 几何 → 输出
-│   ├── azure_capture.py    # k4a ctypes 取帧、坐标变换、车体系断言
-│   ├── body_calib.py       # 标定文件生成 / 校验 / 报告
-│   ├── check_body_frame.py # 物理验收 C（地面标点）/ D（IMU）/ F（卷尺）
-│   ├── k4a_probe.py        # 相机体检
-│   ├── install_vision_service.sh   # 安装 systemd 服务 k4a-vision
-│   ├── install_x_service.sh        # 安装裸 Xorg 服务 k4a-xorg
-│   └── libs/ include/      # Azure Kinect SDK 1.4.2 ARM64 运行库与头文件
-│
-├── azure_kinect_cpp/       # C++ 重写（生产链路 + 诊断工具）
-│   ├── include/kvc/        # 接口定义
-│   ├── src/                # 实现，app_run.cpp 是生产主循环
-│   ├── tools/              # 8 个可执行工具
-│   ├── tests/              # 无框架单测 + Python 生成的 fixtures
-│   └── scripts/            # build_host.sh / build_board.sh / compare_python_cpp.sh
-│
-├── realsense/              # RealSense D435i 适配层（备用相机方案）
-├── models/                 # best.pt / best.onnx / best_trt.onnx
-├── tools/                  # 精度测试、协议回归、姿态扫描等 PC 侧脚本
-├── ros_bridge/             # TCP → ROS 2 桥接 + RViz 配置
-├── diag_*.py               # 帧预算 / 分辨率 / 回环 / 匹配等诊断脚本
-└── board.sh                # 电脑 ↔ 板子：IP / sshfs 挂载 / 推拉 / 远程执行
+├── azure_kinect_cpp/
+│   ├── include/kvc/            # 接口（types / math / calib / decoder / engine / pipeline / serial …）
+│   ├── src/                    # 实现；app_run.cpp 是生产主循环
+│   ├── tools/                  # 8 个可执行工具的 main
+│   ├── tests/                  # 无框架单测 + fixtures
+│   ├── scripts/                # build_host.sh / build_board.sh / compare_python_cpp.sh
+│   ├── body_calib.json         # 本车标定（相机 → 车体）
+│   └── README.md               # C++ 模块详细说明
+├── models/
+│   ├── best_trt.onnx           # TensorRT 引擎的源模型
+│   ├── best.onnx / best.pt     # 原始导出与训练权重
+│   └── history.json            # 训练记录
+└── README.md
 ```
+
+> `models/*.engine`、`build/`、`build-*/` 不入库，需在目标机上生成。
 
 ---
 
@@ -82,105 +65,151 @@ Azure Kinect DK
 
 | 项目 | 要求 |
 |---|---|
-| 目标平台 | Jetson Nano（Ubuntu 18.04 / JetPack），ARM64 |
+| 目标平台 | Jetson（Ubuntu / JetPack，ARM64）或 x86 Linux |
 | 相机 | Azure Kinect DK（**深度必须接自带电源适配器**） |
 | 推理 | TensorRT 8.x + CUDA（随 JetPack） |
-| 相机 SDK | Azure Kinect SDK 1.4.2，仓库内已带 ARM64 库（`azure_kinect/libs`） |
-| Python | 3.6+，`numpy`、`opencv-python`、`pyserial`（`matplotlib` 仅部分工具需要） |
-| 电脑侧（可选） | Ubuntu + ROS 2 Humble（RViz 可视化、精度测试） |
-| C++ 版 | CMake ≥ 3.10、Eigen3、nlohmann/json、OpenCV；无 K4A/TRT 时自动生成桩 |
+| 相机 SDK | Azure Kinect SDK 1.4.2，板上建议放在 `~/work/azure_kinect_sdk` |
+| 构建 | CMake ≥ 3.10、C++17、Eigen3、nlohmann/json、OpenCV |
+
+电脑上不装 K4A / TensorRT 也能编译：CMake 自动探测失败时生成桩，
+`KVC_HAVE_K4A=0` / `KVC_HAVE_TRT=0`，核心库和单测照常运行。
 
 > **SSH 里相机开不了不是供电问题**：深度引擎需要 GLX，必须有 `DISPLAY`。
-> 用 `run_with_x.sh` 或先 `export DISPLAY=:0`。
-> 而如果深度相机对应的 USB 设备（`045e:097c`）根本不枚举，才去查外接电源。
+> 用 `export DISPLAY=:0` 或 `DISPLAY=:1`。而如果深度相机对应的 USB 设备
+> （`045e:097c`）根本不枚举，才去查外接电源。
 
 ---
 
-## 快速开始
-
-### 板子上（真跑）
+## 构建
 
 ```bash
-# 一次性：udev 权限 + X 服务 + 开机自启
-sudo bash ~/work/azure_kinect/k4a_udev_setup.sh
-sudo bash ~/work/azure_kinect/install_x_service.sh
-sudo bash ~/work/azure_kinect/install_vision_service.sh --start
-
-# 日常：一键启动（自动确保 X、日志写到 ~/work/logs/）
-bash ~/work/azure_kinect/start_azure.sh
+# 电脑（x86）：产物在 build-host/，脚本最后自动跑 ctest
+cd azure_kinect_cpp
+bash scripts/build_host.sh
 ```
-
-手动跑（例如还没标定时）：
 
 ```bash
-bash ~/work/azure_kinect/start_azure.sh --print --frames 100 --allow-uncalibrated
+# 板子：产物在 azure_kinect_cpp/build/
+bash ~/work/azure_kinect_cpp/scripts/build_board.sh
 ```
 
-或直接调用入口：
+板上脚本会在 `~/work/azure_kinect_sdk`、`../azure_kinect_sdk`、
+`~/Azure-Kinect-Sensor-SDK` 中自动查找 SDK，也可以显式指定：
 
 ```bash
-sudo bash ~/work/azure_kinect/run_with_x.sh \
-  python3 ~/work/azure_kinect/run_azure.py \
-  --print --frames 30 --stride 2 --rotate 180 --no-gravity
+K4A_DIR=/path/to/azure-kinect-sensor-sdk bash scripts/build_board.sh
 ```
 
-常用输出开关：
+构建完成后，脚本会把 `azure_kinect_cpp/body_calib.json` 复制到二进制旁边。
+
+### 生成 TensorRT 引擎
+
+仓库不包含 `best_trt.engine`（与机器和 TensorRT 版本绑定），在板上生成：
+
+```bash
+cd ~/work
+/usr/src/tensorrt/bin/trtexec --onnx=models/best_trt.onnx --fp16 \
+  --saveEngine=models/best_trt.engine
+```
+
+程序默认按以下顺序查找引擎：
+
+```
+<可执行文件目录>/models/best_trt.engine
+<可执行文件目录>/../models/best_trt.engine
+<可执行文件目录>/../../models/best_trt.engine
+$K4A_ENGINE
+```
+
+也可以用 `--engine PATH` 显式指定。
+
+---
+
+## 标定（一次，需要卷尺）
+
+相机刚性固定在车上，标定一次永久使用。没有标定文件时程序**默认拒绝启动**，
+这是刻意的：静默退回相机系会让所有坐标整体偏约 0.6 m 且不报错。
+
+```bash
+cd ~/work/azure_kinect_cpp
+
+# 1) 量完车心 / 前向 / 光心位置和俯仰，生成标定
+./build/body_calib_cpp --write body_calib.json \
+    --pitch 9.7 --forward 250 --left 0 --height 600 --id buggy01-20261015
+
+# 2) 校验正交性 / det / 竖直判据 / 数值区间
+./build/body_calib_cpp --check body_calib.json
+
+# 3) 物理验收 C/D/F —— 唯一能抓住 180° 重复计入和矩阵转置写反的三关
+DISPLAY=:1 ./build/check_body_frame_cpp --rotate 180
+```
+
+`--calib` 的默认查找顺序：`$K4A_BODY_CALIB` → 二进制目录 → 仓库根目录
+（`azure_kinect_cpp/body_calib.json`）。
+
+临时排查可用 `--allow-uncalibrated`，此时协议头是 `coord:"camera"`，
+**输出不是车体系，不要接电控**。
+
+参数含义与校验规则可直接看 `body_calib_cpp --help`；物理验收的交互式提示
+会逐项告诉你该放什么、看什么。
+
+---
+
+## 运行
+
+```bash
+cd ~/work/azure_kinect_cpp
+DISPLAY=:0 ./build/run_azure_cpp --serial-dry --frames 20 \
+  --rotate 180 --calib body_calib.json --no-gravity \
+  --stride 2 --min-dist 0.3 --max-dist 1.5 \
+  --min-cluster-points 200 --only-classified --mm --print
+```
+
+常用参数：
 
 | 参数 | 作用 |
 |---|---|
+| `--serial-dry` | 把要发给电控的 JSONL 打到 stdout |
+| `--serial /dev/ttyGS0 --baud 115200` | 真发串口 |
 | `--print` | 终端打印结果 |
 | `--json` | 逐帧调试 JSON（优先于 `--print`） |
-| `--serial-dry` | 把发给电控的 JSONL 打到 stdout |
-| `--serial /dev/ttyGS0` | 真发串口（默认 115200） |
-| `--ros HOST:PORT` | 发给电脑上的 ROS 桥接 |
-| `--save-dir out` | 存可视化图 |
+| `--profile` | 退出时打印各阶段耗时 |
 | `--mm` | `obj[]` 内长度字段改用毫米 |
-| `--profile` | 退出时打印各阶段耗时（C++ 版） |
+| `--calib PATH` | 指定标定文件 |
+| `--allow-uncalibrated` | 无标定也启动（退化模式） |
+| `--rotate 0/90/180/270` | 相机安装旋转，**必须与标定文件里的 `image_rotate_deg` 一致** |
+| `--help` | 查看全部参数 |
 
 > **`--rotate 180` 不能省。** 本车相机倒装，漏掉它图像倒着（看得见），
 > 但点云会**静默地**错掉。它还与标定文件里的 `image_rotate_deg` 互相锁死。
+>
+> ROS 相关参数（`--ros*`）当前**未实现**，传入会明确报错。
 
-### 标定（一次，需要卷尺）
+---
 
-```bash
-# 1) 量完车心 / 前向 / 光心位置和俯仰，生成标定
-python3 ~/work/azure_kinect/body_calib.py --write ~/work/azure_kinect/body_calib.json \
-        --pitch 9.7 --forward 250 --left 0 --height 600 --id buggy01-20261015
+## 工具
 
-# 2) 校验正交性 / det / 竖直判据 / 数值区间
-python3 ~/work/azure_kinect/body_calib.py --check ~/work/azure_kinect/body_calib.json
-
-# 3) 物理验收 C/D/F —— 唯一能抓住 180° 重复计入和矩阵转置写反的三关
-DISPLAY=:1 python3 ~/work/azure_kinect/check_body_frame.py --rotate 180
-```
-
-**没有标定文件时程序默认拒绝启动（exit 1）**，这是刻意的：
-静默退回相机系会让所有坐标整体偏约 0.6 m 且不报错。临时排查用
-`--allow-uncalibrated`，此时协议头是 `coord:"camera"`，**不要接电控**。
-
-标定参数的完整含义与校验规则，运行 `python3 ~/work/azure_kinect/body_calib.py --help`
-查看；物理验收的交互式提示会逐项告诉你该放什么、看什么。
-
-### 电脑上（可选）
+| 工具 | 作用 |
+|---|---|
+| `run_azure_cpp` | 生产主循环：取帧 → 检测 → 几何 → 串口 |
+| `body_calib_cpp` | `--write / --check / --verify / --pitch-from-target` |
+| `check_body_frame_cpp` | 物理验收 C（地面标点）/ D（IMU 交叉验证）/ F（3 点卷尺比对） |
+| `diag_match_cpp` | 检测框 + 3D 投影叠加，写 `/tmp/diag_match.jpg` |
+| `check_projection_cpp` | 面心 / 体心投影十字，写 `/tmp/proj_check.jpg` |
+| `check_gravity_cpp` | 读 IMU 判断轴向；不开相机，无 `DISPLAY` 也能跑 |
+| `k4a_probe_cpp` | 设备数 / open / 序列号 / 真开一路流 |
+| `verify_libs_cpp` | dlopen 三个库，打印架构 / 依赖 / symbol 问题 |
+| `geom_replay` | 点云 PLY + 框 JSON → 几何 JSON，离线对比用 |
 
 ```bash
-# 板子 ~/work 挂到本地 ~/board，VS Code 直接改板子上的文件
-./board.sh ip
-./board.sh mount
-
-# 读串口结果并自动判定
-python3 read_serial.py --check
-
-# 离线回归（不用相机、不用板子）
-python3 tools/test_body_frame_math.py
-python3 tools/test_zero_regression.py
-python3 tools/test_output_contract.py
-
-# 精度测试 / 姿态扫描（需要 ROS 2 桥接在跑）
-source /opt/ros/humble/setup.bash
-python3 tools/test_precision.py --frames 100 --true-edge 0.25
-python3 tools/sweep_pose.py --true-edge 0.25
+./build/check_body_frame_cpp --rotate 180
+./build/check_body_frame_cpp --only d
+./build/diag_match_cpp --rotate 180
+./build/check_projection_cpp --rotate 180
 ```
+
+`check_body_frame_cpp` 会交互式提示（放方块、按回车）。C 失败时会打印
+“反号 / 转置 / 180° 重复计入”的指纹判读。
 
 ---
 
@@ -224,58 +253,45 @@ python3 tools/sweep_pose.py --true-edge 0.25
 
 ---
 
-## Python 版与 C++ 版
-
-`azure_kinect_cpp/` 是生产链路的 C++ 重写，**串口契约与 Python 版完全一致**
-（字段名、单位、语义、顺序都不变），电控侧无需改动。
+## 测试
 
 ```bash
-# 电脑（x86）
-bash azure_kinect_cpp/scripts/build_host.sh     # 产物在 build-host/，自动跑 ctest
+# 主机编译并运行全部单测（build_host.sh 自动执行 ctest）
+bash azure_kinect_cpp/scripts/build_host.sh
 
-# 板子
-bash ~/work/azure_kinect_cpp/scripts/build_board.sh
-~/work/azure_kinect_cpp/build/run_azure_cpp --serial-dry --frames 20 \
-  --rotate 180 --calib ~/work/azure_kinect/body_calib.json --no-gravity --print
+# 几何离线回放：PLY + 框 JSON → 几何 JSON
+./build-host/geom_replay --ply azure_kinect_cpp/tests/fixtures/geom/synth4_default.ply \
+  --boxes azure_kinect_cpp/tests/fixtures/geom/grid_split_on.boxes.json
 
-# Python / C++ 同场景对比（相机同一时刻只能被一个进程占用，会先后跑）
-bash azure_kinect_cpp/scripts/compare_python_cpp.sh 20
+# 物理验收 C/D/F
+./build/check_body_frame_cpp --rotate 180
 ```
 
-C++ 版同时提供 `body_calib_cpp`、`check_body_frame_cpp`、`diag_match_cpp`、
-`check_projection_cpp`、`check_gravity_cpp`、`k4a_probe_cpp`、`verify_libs_cpp`、
-`geom_replay` 八个工具，与 Python 版逐项对应。
+`tests/fixtures/` 中已包含各场景的点云、框和期望结果，测试不依赖相机。
+fixtures 的生成脚本（`tests/gen_*.py`）需要外部的 Python 参考实现，
+日常编译和测试不需要运行它们。
 
-**验证状态**：主机（含无 K4A / 无 TRT 的桩配置）编译通过，`ctest` 5/5；
-几何管线 7 个场景与 Python oracle 在容差内一致；`body_calib_cpp` 与 Python 版
-输出逐字节一致。切换 `k4a-vision.service` 到 C++ 之前，仍需完成板上同场景对比验收。
+如需和 Python 参考实现做同场景对比：
 
----
+```bash
+PY=/path/to/run_azure.py bash azure_kinect_cpp/scripts/compare_python_cpp.sh 20
+```
 
-## 测试与验收
-
-| 类别 | 命令 | 说明 |
-|---|---|---|
-| 数学零回归 | `tools/test_body_frame_math.py` | 闭式投影外参与旧实现逐位一致 |
-| 几何零回归 | `tools/test_zero_regression.py` | 与改动前快照字符串相等 |
-| 输出契约 | `tools/test_output_contract.py` | 串口/ROS 字段与单位检查 |
-| 精度 / 重复性 | `tools/test_precision.py` | 面心抖动、尺度、方位角 |
-| 姿态鲁棒性 | `tools/sweep_pose.py` | 不同倾角下的检测/拟合表现 |
-| C++ 单测 | `ctest`（build_host.sh 自动执行） | SSD 解码、几何、标定、串口契约 |
-| 物理验收 C/D/F | `azure_kinect/check_body_frame.py` | 卷尺标点 / IMU 交叉验证 / 3 点比对 |
+两个程序会**先后**运行（相机同一时刻只能被一个进程占用），
+输出在 `/tmp/kvc-compare/`，按中心距、角度、分数差异给出判定。
 
 ---
 
-## 性能（Jetson Nano 实测）
+## 性能
 
-| 指标 | 数值 |
+| 指标 | 数值（Jetson 实测） |
 |---|---|
-| 端到端稳态帧率 | ≈ 2.98 FPS |
+| 端到端稳态帧率 | ≈ 3 FPS |
 | 几何阶段 | ≈ 147 ms（最大头） |
 | 检测器单独推理 | ≈ 32 FPS |
-| 彩色分辨率 | 1440p 是拐点；4K 掉到 1.71 FPS（解码约 36 ms/MP） |
+| 彩色分辨率 | 1440p 是拐点；4K 明显掉帧 |
 
-C++ 版用 `--profile` 打印等帧 / SDK 点云 / 解码 / 检测 / 几何 / 配对各段耗时。
+`--profile` 会打印等帧 / SDK 点云 / 解码 / 检测 / 几何 / 配对各段耗时。
 
 ---
 
@@ -284,21 +300,12 @@ C++ 版用 `--profile` 打印等帧 / SDK 点云 / 解码 / 检测 / 几何 / �
 - **检测距离**：现有模型训练集只有 0.4 m / 1.0 m，1 m 以外召回明显下降；
   anchor 下限 64 px。
 - **紧贴的方块**：点云上会合并成一簇，已用 2D 框切簇缓解，但会裁掉 2–4 cm 面。
-- **模型引擎**：`models/best_trt.engine` 不入库，需在板上由 `best_trt.onnx` 编译
-  （`common/trt_infer.py --rebuild`）。
-
----
-
-## 相关文档
-
-| 文档 | 内容 |
-|---|---|
-| [`azure_kinect_cpp/README.md`](azure_kinect_cpp/README.md) | C++ 版构建、工具、已知差异 |
-| [`ros_bridge/使用说明.md`](ros_bridge/使用说明.md) | TCP → ROS 2 桥接与 RViz |
+- **模型引擎**：`models/best_trt.engine` 不入库，需在板上由 `best_trt.onnx`
+  生成，且必须与板上 TensorRT 版本匹配。
 
 ---
 
 ## 一句话原则
 
-> 相机只负责给"深度图 + 内参"，中间用**点云**这个标准格式隔开；
-> 换相机只换取帧脚本，算法与输出契约一行不改。
+> 相机只负责给“深度图 + 内参”，中间用**点云**这个标准格式隔开；
+> 换相机只换取帧层，几何算法与串口输出契约保持不变。
