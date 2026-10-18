@@ -179,13 +179,8 @@ else()
     message(STATUS "OpenCV not found -> run_azure_cpp skipped")
 endif()
 
-foreach(tool check_body_frame diag_match check_projection check_gravity k4a_probe verify_libs)
-    add_executable(${tool}_cpp tools/main_${tool}.cpp)
-    target_link_libraries(${tool}_cpp PRIVATE kvc_core kvc_infer kvc_geom kvc_capture)
-endforeach()
-
-# verify_libs uses dlopen/dlsym; older glibc needs libdl explicitly.
-target_link_libraries(verify_libs_cpp PRIVATE ${CMAKE_DL_LIBS})
+add_executable(check_body_frame_cpp tools/main_check_body_frame.cpp)
+target_link_libraries(check_body_frame_cpp PRIVATE kvc_core kvc_infer kvc_geom kvc_capture)
 
 # ---------------------------------------------------------------------------
 # Tests (no external framework; each test is an executable returning 0/1)

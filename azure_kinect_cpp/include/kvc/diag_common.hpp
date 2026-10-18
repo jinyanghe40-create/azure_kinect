@@ -1,8 +1,7 @@
 #pragma once
 
-// Shared setup for the acceptance / diagnostic tools.  These are ports of
-// check_body_frame.py, diag_match.py and check_projection.py, which all build
-// the same geometry arguments from the live source state (never guessed).
+// Shared setup for the acceptance tools.  They build the same geometry
+// arguments from the live source state (never guessed).
 
 #include "kvc/azure_source.hpp"
 #include "kvc/body_calib.hpp"

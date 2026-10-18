@@ -131,7 +131,7 @@ AzureSource::AzureSource(const SourceConfig& cfg,
             std::string("取不到相机标定（get_calibration 失败）：") + e.what() +
             "\n  ★ 标定是内参/外参的唯一来源，没有它建不出点云。"
             "\n  · 相机没插好 / 供电不足 / 设备被占用都可能引起"
-            "\n  · 先跑 k4a_probe_cpp 确认设备和深度模式");
+            "\n  · 检查相机连接与供电后重试");
     }
 
     if (impl_->has_calib) {
@@ -146,7 +146,7 @@ AzureSource::AzureSource(const SourceConfig& cfg,
         if (!(intr_depth_.fx > 0.0 && intr_depth_.fy > 0.0)) {
             throw CaptureError(
                 "相机标定返回了无效深度内参（fx/fy ≤ 0）。"
-                "\n  没有可靠内参就建不出点云；先跑 k4a_probe_cpp 复现。");
+                "\n  没有可靠内参就建不出点云；检查相机连接与供电后重试。");
         }
         intr_color_ = Intrinsics{cp.fx, cp.fy, cp.cx, cp.cy,
                                  c.resolution_width, c.resolution_height, ""};

@@ -1,6 +1,6 @@
 # azure_kinect_cpp
 
-Azure Kinect 视觉链路的 C++ 实现：**生产运行链路 + 验收/诊断工具**。
+Azure Kinect 视觉链路的 C++ 实现：**生产运行链路 + 标定/验收工具**。
 
 ```
 相机 → 点云 → SSD 检测 → 3D 几何 → 车体系坐标 → 串口 JSONL
@@ -69,17 +69,12 @@ DISPLAY=:0 ./build/run_azure_cpp --serial-dry --frames 20 \
 `DISPLAY` 说明：深度引擎需要 GLX，ssh 里没有 `DISPLAY` 时相机开不起来。
 先 `export DISPLAY=:0`，这不是供电问题。
 
-## 验收/诊断工具
+## 标定与验收工具
 
 | 工具 | 作用 |
 |---|---|
 | `body_calib_cpp` | `--write/--check/--verify/--pitch-from-target` |
 | `check_body_frame_cpp` | 物理验收 C（卷尺标点）/ D（IMU 交叉验证）/ F（3 点卷尺比对） |
-| `diag_match_cpp` | 检测框 + 3D 投影叠加，写 `/tmp/diag_match.jpg` |
-| `check_projection_cpp` | 面心/体心投影十字，写 `/tmp/proj_check.jpg` |
-| `check_gravity_cpp` | 读 IMU，判断哪根轴朝上；不开相机，无 DISPLAY 也能跑 |
-| `k4a_probe_cpp` | 设备数 / open / 序列号 / 真开一路流 |
-| `verify_libs_cpp` | dlopen 三个库，打印架构/依赖/symbol 问题 |
 | `geom_replay` | 点云 PLY + 框 JSON → 几何 JSON，离线对比用 |
 
 用法：
@@ -87,8 +82,6 @@ DISPLAY=:0 ./build/run_azure_cpp --serial-dry --frames 20 \
 ```bash
 ./build/check_body_frame_cpp --rotate 180
 ./build/check_body_frame_cpp --only d          # 只跑 IMU 交叉验证
-./build/diag_match_cpp --rotate 180
-./build/check_projection_cpp --rotate 180
 ```
 
 `check_body_frame_cpp` 会交互式提示（放方块、按回车）。C 失败时打印
@@ -103,11 +96,10 @@ DISPLAY=:0 ./build/run_azure_cpp --serial-dry --frames 20 \
 - 几何管线 7 个场景与 Python oracle 对比在容差内（`tests/test_pc_pipeline`）。
 - `body_calib_cpp` 与 Python 版的 `--check / --verify / --write /
   --pitch-from-target` 输出逐字节一致（仅程序名和文件路径不同）。
-- 8 个工具在主机上编译运行，无相机时给出明确报错而不是链接/段错误。
+- 工具在主机上编译运行，无相机时给出明确报错而不是链接/段错误。
 
-仍需在实际部署环境完成：`run_azure_cpp` 真跑、`diag_match_cpp` /
-`check_projection_cpp` 的 JPG、`check_body_frame_cpp` 的 C/D/F，
-以及 TensorRT 引擎反序列化与长稳测试。
+仍需在实际部署环境完成：`run_azure_cpp` 真跑、`check_body_frame_cpp`
+的 C/D/F，以及 TensorRT 引擎反序列化与长稳测试。
 
 ## 实现说明
 
@@ -136,7 +128,7 @@ PY=/path/to/run_azure.py bash scripts/compare_python_cpp.sh 20
 include/kvc/   接口（types/math/calib/json/preprocess/decoder/engine/
                pipeline/serial/source/match/cli/timers）
 src/           实现；app_run.cpp 是生产主循环
-tools/         8 个可执行工具的 main
+tools/         工具入口（run / calib / 验收 / 离线回放）
 tests/         无框架单测（含已生成的 fixtures）
 scripts/       build_host.sh / build_board.sh / compare_python_cpp.sh
 ```

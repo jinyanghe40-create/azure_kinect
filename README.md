@@ -34,7 +34,7 @@ Azure Kinect DK
 - **几何**：纯几何法，不训练。RANSAC 平面剔除 → 体素下采样 → 欧式聚类 → 分簇平面拟合 → 法向统一 → 选识别面
 - **输出**：面心 `face`、体心 `cube`、单位法向 `normal`、边长 `edge`、与光轴夹角 `angle`、相对竖直倾角 `lean`、质量等级 `quality`
 - **坐标系**：相机倒装（`--rotate 180`），标定一次永久使用；输出统一在车体系
-- **附带**：标定、投影诊断、IMU 校验、相机体检等 8 个可执行工具
+- **附带**：标定、物理验收、离线几何回放等工具
 
 ---
 
@@ -45,7 +45,7 @@ Azure Kinect DK
 ├── azure_kinect_cpp/
 │   ├── include/kvc/            # 接口（types / math / calib / decoder / engine / pipeline / serial …）
 │   ├── src/                    # 实现；app_run.cpp 是生产主循环
-│   ├── tools/                  # 8 个可执行工具的 main
+│   ├── tools/                  # 工具入口（运行 / 标定 / 验收 / 离线回放）
 │   ├── tests/                  # 无框架单测 + fixtures
 │   ├── scripts/                # build_host.sh / build_board.sh / compare_python_cpp.sh
 │   ├── body_calib.json         # 本车标定（相机 → 车体）
@@ -194,18 +194,11 @@ DISPLAY=:0 ./build/run_azure_cpp --serial-dry --frames 20 \
 | `run_azure_cpp` | 生产主循环：取帧 → 检测 → 几何 → 串口 |
 | `body_calib_cpp` | `--write / --check / --verify / --pitch-from-target` |
 | `check_body_frame_cpp` | 物理验收 C（地面标点）/ D（IMU 交叉验证）/ F（3 点卷尺比对） |
-| `diag_match_cpp` | 检测框 + 3D 投影叠加，写 `/tmp/diag_match.jpg` |
-| `check_projection_cpp` | 面心 / 体心投影十字，写 `/tmp/proj_check.jpg` |
-| `check_gravity_cpp` | 读 IMU 判断轴向；不开相机，无 `DISPLAY` 也能跑 |
-| `k4a_probe_cpp` | 设备数 / open / 序列号 / 真开一路流 |
-| `verify_libs_cpp` | dlopen 三个库，打印架构 / 依赖 / symbol 问题 |
 | `geom_replay` | 点云 PLY + 框 JSON → 几何 JSON，离线对比用 |
 
 ```bash
 ./build/check_body_frame_cpp --rotate 180
 ./build/check_body_frame_cpp --only d
-./build/diag_match_cpp --rotate 180
-./build/check_projection_cpp --rotate 180
 ```
 
 `check_body_frame_cpp` 会交互式提示（放方块、按回车）。C 失败时会打印
